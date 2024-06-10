@@ -7,7 +7,6 @@ export type TaskType = {
     id: string
     title: string
     isDone: boolean
-
 }
 export type FilterValuesType = 'all' | 'active' | 'completed'
 
@@ -31,6 +30,10 @@ function App() {
     const addTask = (taskTitle:string) => {
         const task = {id: v1(), title: taskTitle, isDone: false}
         setTasks([task, ...tasks])
+    }
+    const changeStatusTask = (taskId: string, isDone: boolean) => {
+        const changedStatus = tasks.map(t => t.id === taskId ? {...t, isDone: isDone}: t)
+        setTasks(changedStatus)
     }
 
     const [filter, setFilter] = useState<FilterValuesType>('all')
@@ -57,6 +60,8 @@ function App() {
                 removeTask={removeTask}
                 changeFilter={changeFilter}
                 addTask={addTask}
+                changeStatusTask={changeStatusTask}
+                filter={filter}
             />
         </div>
     )
