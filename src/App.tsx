@@ -1,65 +1,70 @@
 import React, {useState} from 'react';
 import './App.css';
-import {Todolist} from "./components/todolist/Todolist";
+import {Country} from "./Country";
 import {v1} from "uuid";
 
-export type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
-
+export type BanknotsType = 'USD' | 'RUB' | 'All' // создадим типы для banknotes -он может быть 'DOLLARS', 'RUBLS' или 'All'
+export type MoneyType = {
+    banknote: BanknotsType
+    nominal: number// не ленимся, убираем заглушку, и пишем правильный тип)
+    id: string// ложку за Димыча, за...
 }
-export type FilterValuesType = 'all' | 'active' | 'completed'
+
+let defaultMoney: Array<MoneyType> = [  // типизируем
+    {banknote: 'USD', nominal: 100, id: v1()},
+    {banknote: 'USD', nominal: 100, id: v1()},
+    {banknote: 'RUB', nominal: 100, id: v1()},
+    {banknote: 'USD', nominal: 100, id: v1()},
+    {banknote: 'USD', nominal: 100, id: v1()},
+    {banknote: 'RUB', nominal: 100, id: v1()},
+    {banknote: 'USD', nominal: 100, id: v1()},
+    {banknote: 'RUB', nominal: 100, id: v1()},
+]
+
+
+export const moneyFilter = (money: Array<MoneyType>, filter: BanknotsType): Array<MoneyType> => {
+    if (filter === 'All') return money
+    return money.filter(m => m.banknote === filter)
+
+
+    //если пришел filter со значением 'All', то возвращаем все банкноты
+    //return money.filter... ну да, придется фильтровать
+}
+
 
 function App() {
+    // убираем заглушки в типизации и вставляем в качестве инициализационного значения defaultMoney
+    const [money, setMoney] = useState<Array<MoneyType>>(defaultMoney)
+    const [filterValue, setFilterValue] = useState<BanknotsType>('All')   // по умолчанию указываем все банкноты
 
-    const tasks1: Array<TaskType> = [
-        {id: v1(), title: 'HTML&CSS', isDone: true},
-        {id: v1(), title: 'JS', isDone: true},
-        {id: v1(), title: 'ReactJS', isDone: false},
-        {id: v1(), title: 'Redux', isDone: false},
-        {id: v1(), title: 'Typescript', isDone: false},
-        {id: v1(), title: 'RTK query', isDone: false},
-    ]
+    // а вот сейчас притормаживаем. И вдумчиво: константа filteredMoney получает результат функции moneyFilter
+    // в функцию передаем деньги и фильтр, по которому ихбудем выдавать(ретёрнуть)
+    const filteredMoney: MoneyType[] = moneyFilter(money, filterValue)
 
-    const [tasks, setTasks] = useState(tasks1)
-
-    const removeTask = (taskId: string) => {
-        setTasks(tasks.filter(t => t.id !== taskId))
+    const addMoney = (banknote: BanknotsType) => {
+        const newBanknote = {banknote: banknote, nominal: 100, id: v1()}
+        setMoney([...money, newBanknote])
+        // Добавление денег сделаем в последнюю очередь, после настройки фильтров и отрисовки денег
     }
 
-    const addTask = (taskTitle:string) => {
-        const task = {id: v1(), title: taskTitle, isDone: false}
-        setTasks([task, ...tasks])
-    }
-
-    const [filter, setFilter] = useState<FilterValuesType>('all')
-
-    let tasksForTodolist :Array<TaskType> = tasks
-    if (filter === 'active') {
-        tasksForTodolist = tasks.filter(task => !task.isDone)
-    }
-
-    if (filter === 'completed') {
-        tasksForTodolist = tasks.filter(task => task.isDone)
-    }
-
-    const changeFilter = (filter: FilterValuesType) => {
-        setFilter(filter)
+    const removeMoney = (banknote: BanknotsType) => {
+        // Снятие денег сделаем в последнюю очередь, после настройки фильтров и отрисовки денег
+       const index = money.findIndex(b => b.banknote === banknote)
+        if (index !== -1) {
+            setMoney(money.filter((el, i) => i !== index));
+        }
     }
 
     return (
         <div className="App">
-            <Todolist
-                title="What to learn"
-                tasks={tasksForTodolist}
-                date={'30/01/2024'}
-                removeTask={removeTask}
-                changeFilter={changeFilter}
-                addTask={addTask}
+            <Country
+                data={filteredMoney}   //отрисовать будем деньги после фильтрации
+                setFilterValue={setFilterValue}  //useState передаем? Так можно было?!
+                addMoney={addMoney}
+                removeMoney={removeMoney}
             />
         </div>
-    )
+    );
 }
 
 export default App;
