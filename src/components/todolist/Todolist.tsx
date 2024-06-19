@@ -3,17 +3,17 @@ import {FilterValuesType, TaskType} from "../../App";
 import {Button} from "../button/Button";
 
 type PropsType = {
+    todoListId: string
     title: string
     tasks: TaskType[]
-    date?: string
-    removeTask: (taskId: string) => void
-    changeFilter: (filter: FilterValuesType) => void
-    addTask: (taskTitle: string) => void
-    changeStatusTask: (taskId: string, isDone: boolean) => void
+    removeTask: (taskId: string, todoListId: string) => void
+    changeTaskFilter: (filter: FilterValuesType, todoListId: string) => void
+    addTask: (taskTitle: string, todoListId: string) => void
+    changeStatusTask: (taskId: string, isDone: boolean, todoListId: string) => void
     filter: FilterValuesType
 }
 
-export const Todolist = ({title, tasks, date, removeTask, changeFilter, addTask, changeStatusTask, filter}: PropsType) => {
+export const Todolist = ({todoListId, title, tasks, removeTask,  changeTaskFilter, addTask, changeStatusTask, filter}: PropsType) => {
 
     const [inputText, setInputText] = useState('')
     const[error, setError] = useState(false)
@@ -24,7 +24,7 @@ export const Todolist = ({title, tasks, date, removeTask, changeFilter, addTask,
     const addTaskInput = () => {
         if(inputText.trim()){
             setError(false)
-            addTask(inputText.trim())
+            addTask(inputText.trim(), todoListId)
             setInputText('')
         }else {
             setError(true)
@@ -49,21 +49,20 @@ export const Todolist = ({title, tasks, date, removeTask, changeFilter, addTask,
                     <ul>
                         {tasks.map(task => {
                             return (
-                                <li key={task.id}>
-                                    <input type="checkbox" onChange={(e) => changeStatusTask(task.id, e.currentTarget.checked)} checked={task.isDone}/>
+                                <li key={task.taskId}>
+                                    <input type="checkbox" onChange={(e) => changeStatusTask(task.taskId, e.currentTarget.checked, todoListId)} checked={task.isDone}/>
                                     <span className={task.isDone ? 'task-done' : 'task'} >{task.title}</span>
-                                    <button onClick={() => removeTask(task.id)}>X</button>
+                                    <button onClick={() => removeTask(task.taskId, todoListId)}>X</button>
                                 </li>
                             )
                         })}
                     </ul>
             }
             <div>
-                <Button classes={filter === 'all' ? 'activeFilter' : ''} onClickHandler={() => changeFilter('all')} title='All'/>
-                <Button classes={filter === 'active' ? 'activeFilter' : ''} onClickHandler={() => changeFilter('active')} title='Active'/>
-                <Button classes={filter === 'completed' ? 'activeFilter' : ''} onClickHandler={() => changeFilter('completed')} title='Completed'/>
+                <Button classes={filter === 'all' ? 'activeFilter' : ''} onClickHandler={() => changeTaskFilter('all', todoListId)} title='All'/>
+                <Button classes={filter === 'active' ? 'activeFilter' : ''} onClickHandler={() => changeTaskFilter('active', todoListId)} title='Active'/>
+                <Button classes={filter === 'completed' ? 'activeFilter' : ''} onClickHandler={() => changeTaskFilter('completed', todoListId)} title='Completed'/>
             </div>
-            <div>{date}</div>
         </div>
     )
 }
