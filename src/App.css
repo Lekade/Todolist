@@ -8,8 +8,12 @@
 }
 
 .todolist{
+  position: relative;
   background-color: cadetblue;
   padding: 20px;
+}
+.todolistTitle{
+  display: flex;
 }
 
 .task-done {
