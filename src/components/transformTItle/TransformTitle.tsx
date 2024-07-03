@@ -1,5 +1,6 @@
 import React, {ChangeEvent, useState} from 'react';
 import styled from "styled-components";
+import Input from '@mui/material/Input';
 
 type TransformTitleType = {
     title: string
@@ -20,7 +21,7 @@ export const TransformTitle = ({title, changeTitle, style}: TransformTitleType) 
 
     return (
         editMode
-            ? <input value={inputValue} onChange={changeInputHandler} onBlur={editModeHandler}  type="text" autoFocus/>
+            ? <Input defaultValue="Error" value={inputValue} onChange={changeInputHandler} onBlur={editModeHandler} autoFocus/>
             : <Title className={style} onDoubleClick={editModeHandler}>{title}</Title>
     );
 };
