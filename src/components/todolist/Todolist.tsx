@@ -1,9 +1,13 @@
 import React from 'react';
 import {FilterValuesType, TaskType} from "../../App";
-import {Button} from "../button/Button";
 import AddItemForm from "../addItemForm/addItemForm";
 import {TransformTitle} from "../transformTItle/TransformTitle";
-import Task from "../task/Task";
+import {Task} from "../task/Task";
+import Button from '@mui/material/Button';
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import styled from "styled-components";
+import ButtonGroup from "@mui/material/ButtonGroup";
 
 type PropsType = {
     todoListId: string
@@ -51,13 +55,17 @@ export const Todolist = ({
 
     return (
         <div className='todolist'>
-            <TransformTitle changeTitle={newTitle => changeToDoListTitleHandler(newTitle)} title={title}/>
-            <Button onClickHandler={removeToDoListHandler} title='X'/>
+            <TitleTodolistBlock>
+                <TransformTitle changeTitle={newTitle => changeToDoListTitleHandler(newTitle)} title={title}/>
+                <IconButton aria-label="delete" onClick={removeToDoListHandler} size="large">
+                    <DeleteIcon fontSize="inherit"/>
+                </IconButton>
+            </TitleTodolistBlock>
             <AddItemForm addItem={(itemTitle) => addTaskHandler(itemTitle)}/>
             {
                 tasks.length === 0
                     ? <p>Your taskslist is empty</p> :
-                    <ul>
+                    <TasksContainer>
                         {tasks.map(task => {
                             return <Task
                                 key={task.taskId}
@@ -69,19 +77,27 @@ export const Todolist = ({
                                 removeTask={() => removeTask(task.taskId, todoListId)}
                             />
                         })}
-                    </ul>
+                    </TasksContainer>
             }
-            <div>
-                <Button classes={filter === 'all' ? 'activeFilter' : ''}
-                        onClickHandler={() => changeTaskFilter('all', todoListId)} title='All'/>
-                <Button classes={filter === 'active' ? 'activeFilter' : ''}
-                        onClickHandler={() => changeTaskFilter('active', todoListId)} title='Active'/>
-                <Button classes={filter === 'completed' ? 'activeFilter' : ''}
-                        onClickHandler={() => changeTaskFilter('completed', todoListId)} title='Completed'/>
-            </div>
+            <ButtonGroup sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+            }}>
+                <Button onClick={() => changeTaskFilter('all', todoListId)} variant={filter === 'all' ? "outlined" : "contained"} color={"primary"}>All</Button>
+                <Button onClick={() => changeTaskFilter('active', todoListId)} variant={filter === 'active' ? "outlined" : "contained"} color={'primary'}>Active</Button>
+                <Button onClick={() => changeTaskFilter('completed', todoListId)} variant={filter === 'completed' ? "outlined" : "contained"} color={ 'primary'}>Completed</Button>
+            </ButtonGroup>
         </div>
     )
 }
+
+
+const TasksContainer = styled.ul`
+  padding-left: 0;
+`
+const TitleTodolistBlock = styled.div`
+    margin-bottom: 25px;
+`
 
 
 
