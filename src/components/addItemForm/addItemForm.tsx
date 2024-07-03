@@ -1,36 +1,53 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import {Button} from "../button/Button";
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
 type AddItemFormType = {
     addItem: (itemTitle: string) => void
 }
 
-const AddItemForm = ({addItem}:AddItemFormType ) => {
+const AddItemForm = ({addItem}: AddItemFormType) => {
     const [inputText, setInputText] = useState('')
-    const[error, setError] = useState(false)
-    const ChangeInputHandler = (e:ChangeEvent<HTMLInputElement>) =>{
+    const [error, setError] = useState(false)
+    const ChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setInputText(e.currentTarget.value)
         setError(false)
     }
     const addItemHandler = () => {
-        if(inputText.trim()){
+        if (inputText.trim()) {
             setError(false)
             addItem(inputText.trim())
             setInputText('')
-        }else {
+        } else {
             setError(true)
         }
     }
-    const keyDownAddTaskInput = (e:KeyboardEvent<HTMLInputElement>) =>{
+    const keyDownAddTaskInput = (e: KeyboardEvent<HTMLInputElement>) => {
         e.key === 'Enter' && addItemHandler()
     }
+
+    const buttonStyles = {
+        maxWidth: '38px',
+        minWidth: '38px',
+        minHeight: '38px',
+        maxHeight: '38px'
+    }
+
     return (
         <>
             <div>
-                <input className={error ? 'error-input' : ''} onChange={ChangeInputHandler} onKeyDown={keyDownAddTaskInput} value={inputText} />
-                <Button onClickHandler={addItemHandler} title='+'/>
+                <TextField
+                    error={!!error}
+                    id="outlined-basic"
+                    label={error ? 'The field is required' : "Entar at title"}
+                    variant="outlined"
+                    onChange={ChangeInputHandler}
+                    onKeyDown={keyDownAddTaskInput}
+                    value={inputText}
+                    size="small"
+                />
+                <Button sx={buttonStyles} variant="contained" onClick={addItemHandler} size="small">+</Button>
             </div>
-            {error && <div className='error'>The field is required</div>}
         </>
     );
 };
