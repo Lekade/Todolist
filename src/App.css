@@ -1,38 +1,38 @@
 .App {
-  padding: 30px;
-  display: flex;
+  /*padding: 30px;*/
+  /*display: flex;*/
 }
 
-.App > div {
-  margin-right: 50px;
-}
+/*.App > div {*/
+/*  margin-right: 50px;*/
+/*}*/
 
-.todolist{
-  position: relative;
-  background-color: cadetblue;
-  padding: 20px;
-}
-.todolistTitle{
-  display: flex;
-}
+/*.todolist{*/
+/*  position: relative;*/
+/*  background-color: cadetblue;*/
+/*  padding: 20px;*/
+/*}*/
+/*.todolistTitle{*/
+/*  display: flex;*/
+/*}*/
 
-.task-done {
-  text-decoration: line-through;
-  opacity: 0.5;
-}
+/*.task-done {*/
+/*  text-decoration: line-through;*/
+/*  opacity: 0.5;*/
+/*}*/
 
-.task{
-  font-weight: bold;
-}
+/*.task{*/
+/*  font-weight: bold;*/
+/*}*/
 
-.activeFilter {
-  background-color: chocolate;
-}
+/*.activeFilter {*/
+/*  background-color: chocolate;*/
+/*}*/
 
-.error{
-  color: red;
-}
-.error-input{
-  border: red solid 2px;
+/*.error{*/
+/*  color: red;*/
+/*}*/
+/*.error-input{*/
+/*  border: red solid 2px;*/
 
-}
+/*}*/
