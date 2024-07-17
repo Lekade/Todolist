@@ -1,6 +1,6 @@
 import {FilterValuesType, TodoListType} from "../App";
 
-type AddTodolistActionType = {
+export type AddTodolistActionType = {
     type: 'ADD-TODOLIST',
     payload: {
         title:string
@@ -8,7 +8,7 @@ type AddTodolistActionType = {
     }
 }
 
-type RemoveTodolistActionType = {
+export type RemoveTodolistActionType = {
     type: 'REMOVE-TODOLIST',
     payload: {
         todoListId: string
