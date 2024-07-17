@@ -1,6 +1,12 @@
 import {TaskObjType} from "../App";
 import {v1} from "uuid";
-import {AddTaskAC, ChangeStatusTaskAC, ChangeTaskTitleAC, RemoveTaskAC, tasksReducer} from "./tasks-reducer";
+import {
+    addTaskAC,
+    changeStatusTaskAC,
+    changeTitleTaskAC,
+    removeTaskAC,
+    tasksReducer
+} from "./tasks-reducer";
 
 const todoListId1 = v1()
 const todoListId2 = v1()
@@ -25,7 +31,7 @@ beforeEach(() => {
 
 
 test('the task should be added', () => {
-    const action = AddTaskAC(todoListId2, 'Hello word')
+    const action = addTaskAC(todoListId2, 'Hello word')
     const result = tasksReducer(tasks, action)
 
     expect(result[todoListId2].length).toBe(4)
@@ -33,7 +39,7 @@ test('the task should be added', () => {
 })
 
 test('the task should be remove', () => {
-    const action = RemoveTaskAC('02', todoListId2)
+    const action = removeTaskAC('02', todoListId2)
     const result = tasksReducer(tasks, action)
 
     expect(result[todoListId2].length).toBe(2)
@@ -42,16 +48,60 @@ test('the task should be remove', () => {
 })
 
 test('the task should be changed status', () => {
-    const action = ChangeStatusTaskAC('03', true, todoListId1)
+    const action = changeStatusTaskAC('03', true, todoListId1)
     const result = tasksReducer(tasks, action)
 
     expect(result[todoListId1].length).toBe(6)
     expect(result[todoListId1][2].isDone).toBe(true)
 })
 test('the task should be changed title', () => {
-    const action = ChangeTaskTitleAC('cheese', '01', todoListId2)
+    const action = changeTitleTaskAC('cheese', '01', todoListId2)
     const result = tasksReducer(tasks, action)
 
     expect(result[todoListId2].length).toBe(3)
     expect(result[todoListId2][0].title).toBe('cheese')
+})
+test('correct task should be added to correct array', () => {
+    const startState: TaskObjType = {
+        'todolistId1': [
+            {taskId: '1', title: 'CSS', isDone: false},
+            {taskId: '2', title: 'JS', isDone: true},
+            {taskId: '3', title: 'React', isDone: false}
+        ],
+        'todolistId2': [
+            {taskId: '1', title: 'bread', isDone: false},
+            {taskId: '2', title: 'milk', isDone: true},
+            {taskId: '3', title: 'tea', isDone: false}
+        ]
+    }
+
+    const action = addTaskAC('todolistId2','juce')
+
+    const endState = tasksReducer(startState, action)
+
+    expect(endState['todolistId1'].length).toBe(3)
+    expect(endState['todolistId2'].length).toBe(4)
+    expect(endState['todolistId2'][0].taskId).toBeDefined()
+    expect(endState['todolistId2'][0].title).toBe('juce')
+    expect(endState['todolistId2'][0].isDone).toBe(false)
+})
+
+test('status of specified task should be changed', () => {
+    const startState: TaskObjType = {
+        'todolistId1': [
+            {taskId: '1', title: 'CSS', isDone: false},
+            {taskId: '2', title: 'JS', isDone: true},
+            {taskId: '3', title: 'React', isDone: false}
+        ],
+        'todolistId2': [
+            {taskId: '1', title: 'bread', isDone: false},
+            {taskId: '2', title: 'milk', isDone: true},
+            {taskId: '3', title: 'tea', isDone: false}
+        ]
+    }
+
+    const action = changeStatusTaskAC('2', false, 'todolistId2')
+    const endState = tasksReducer(startState, action)
+    expect(endState['todolistId2'][1].isDone).toBe(false)
+    expect(endState['todolistId1'][1].isDone).toBe(true)
 })
