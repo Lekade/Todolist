@@ -33,7 +33,9 @@ type ChangeTodolistTitleActionType = {
 
 export type ActionType = AddTodolistActionType | RemoveTodolistActionType | ChangeTodolistFilterActionType | ChangeTodolistTitleActionType
 
-export const todolistsReducer = (todolists: Array<TodoListType>, action: ActionType): Array<TodoListType> => {
+const initializationTodolists:Array<TodoListType> = []
+
+export const todolistsReducer = (todolists: Array<TodoListType> = initializationTodolists, action: ActionType): Array<TodoListType> => {
     switch (action.type){
         case 'ADD-TODOLIST' :
             const {title, todoListId} = action.payload
