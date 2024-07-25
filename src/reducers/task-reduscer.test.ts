@@ -1,4 +1,4 @@
-import {TaskObjType} from "../App";
+import {TasksStateType} from "../App";
 import {v1} from "uuid";
 import {
     addTaskAC,
@@ -10,7 +10,7 @@ import {
 
 const todoListId1 = v1()
 const todoListId2 = v1()
-let tasks: TaskObjType
+let tasks: TasksStateType
 beforeEach(() => {
     tasks = {
         [todoListId1]: [
@@ -28,7 +28,6 @@ beforeEach(() => {
         ]
     }
 })
-
 
 test('the task should be added', () => {
     const action = addTaskAC(todoListId2, 'Hello word')
@@ -62,7 +61,7 @@ test('the task should be changed title', () => {
     expect(result[todoListId2][0].title).toBe('cheese')
 })
 test('correct task should be added to correct array', () => {
-    const startState: TaskObjType = {
+    const startState: TasksStateType = {
         'todolistId1': [
             {taskId: '1', title: 'CSS', isDone: false},
             {taskId: '2', title: 'JS', isDone: true},
@@ -87,7 +86,7 @@ test('correct task should be added to correct array', () => {
 })
 
 test('status of specified task should be changed', () => {
-    const startState: TaskObjType = {
+    const startState: TasksStateType = {
         'todolistId1': [
             {taskId: '1', title: 'CSS', isDone: false},
             {taskId: '2', title: 'JS', isDone: true},
