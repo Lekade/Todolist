@@ -8,16 +8,21 @@ import {
 import { v1 } from 'uuid'
 import { TodoListType } from '../App'
 
-test('correct todolist should be removed', () => {
-    let todolistId1 = v1()
-    let todolistId2 = v1()
-
-    // 1. Стартовый state
-    const startState: TodoListType[] = [
+let todolistId1:string
+let todolistId2:string
+let startState: TodoListType[]
+beforeEach(()=> {
+    todolistId1 = v1()
+    todolistId2 = v1()
+    startState = [
         { todoListId: todolistId1, title: 'What to learn', filter: 'all' },
         { todoListId: todolistId2, title: 'What to buy', filter: 'all' },
     ]
+})
+// 1. Стартовый state
 
+
+test('correct todolist should be removed', () => {
     // 2. Действие
     const action : ActionType = RemoveTodolistAC(todolistId1)
 
