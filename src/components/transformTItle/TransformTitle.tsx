@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, memo, useState} from 'react';
 import styled from "styled-components";
 import Input from '@mui/material/Input';
 
@@ -8,7 +8,8 @@ type TransformTitleType = {
     style?: string
 }
 
-export const TransformTitle = ({title, changeTitle, style}: TransformTitleType) => {
+export const TransformTitle = memo(({title, changeTitle, style}: TransformTitleType) => {
+    console.log('render transformTitle')
     const [editMode, setEditMode] = useState(false)
     const [inputValue, setInputValue] = useState<string>(title)
     const editModeHandler = () => {
@@ -21,10 +22,10 @@ export const TransformTitle = ({title, changeTitle, style}: TransformTitleType) 
 
     return (
         editMode
-            ? <Input defaultValue="Error" value={inputValue} onChange={changeInputHandler} onBlur={editModeHandler} autoFocus/>
+            ? <Input value={inputValue} onChange={changeInputHandler} onBlur={editModeHandler} autoFocus/>
             : <Title className={style} onDoubleClick={editModeHandler}>{title}</Title>
     );
-};
+});
 
 
 const Title = styled.h3`
