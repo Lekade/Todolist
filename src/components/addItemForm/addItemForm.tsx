@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, memo, useState} from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
@@ -6,7 +6,8 @@ type AddItemFormType = {
     addItem: (itemTitle: string) => void
 }
 
-const AddItemForm = ({addItem}: AddItemFormType) => {
+const AddItemForm = memo(({addItem}: AddItemFormType) => {
+    console.log('render addItemForm')
     const [inputText, setInputText] = useState('')
     const [error, setError] = useState(false)
     const ChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -15,7 +16,7 @@ const AddItemForm = ({addItem}: AddItemFormType) => {
     }
     const addItemHandler = () => {
         if (inputText.trim()) {
-            setError(false)
+            error && setError(false)
             addItem(inputText.trim())
             setInputText('')
         } else {
@@ -50,6 +51,6 @@ const AddItemForm = ({addItem}: AddItemFormType) => {
             </div>
         </>
     );
-};
+});
 
 export default AddItemForm;
