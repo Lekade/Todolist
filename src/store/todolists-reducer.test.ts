@@ -15,8 +15,8 @@ beforeEach(()=> {
     todolistId1 = v1()
     todolistId2 = v1()
     startState = [
-        { todoListId: todolistId1, title: 'What to learn', filter: 'all' },
-        { todoListId: todolistId2, title: 'What to buy', filter: 'all' },
+        { todolistId: todolistId1, title: 'What to learn', filter: 'all' },
+        { todolistId: todolistId2, title: 'What to buy', filter: 'all' },
     ]
 })
 // 1. Стартовый state
@@ -32,7 +32,7 @@ test('correct todolist should be removed', () => {
     // в массиве останется один тудулист
     expect(endState.length).toBe(1)
     // удалится нужный тудулист, а не любой
-    expect(endState[0].todoListId).toBe(todolistId2)
+    expect(endState[0].todolistId).toBe(todolistId2)
 })
 
 test('correct todolist should be added', () => {
@@ -40,8 +40,8 @@ test('correct todolist should be added', () => {
     let todolistId2 = v1()
 
     const startState: TodoListType[] = [
-        { todoListId: todolistId1, title: 'What to learn', filter: 'all' },
-        { todoListId: todolistId2, title: 'What to buy', filter: 'all' },
+        { todolistId: todolistId1, title: 'What to learn', filter: 'all' },
+        { todolistId: todolistId2, title: 'What to buy', filter: 'all' },
     ]
 
     const action: ActionType = AddTodolistAC(v1(), 'New Todolist')
@@ -56,8 +56,8 @@ test('correct todolist should change its name', () => {
     let todolistId2 = v1()
 
     const startState: TodoListType[] = [
-        { todoListId: todolistId1, title: 'What to learn', filter: 'all' },
-        { todoListId: todolistId2, title: 'What to buy', filter: 'all' },
+        { todolistId: todolistId1, title: 'What to learn', filter: 'all' },
+        { todolistId: todolistId2, title: 'What to buy', filter: 'all' },
     ]
 
     const action: ActionType = ChangeTodolistTitleAC(todolistId2 ,'New Todolist')
@@ -72,8 +72,8 @@ test('correct filter of todolist should be changed', () => {
     let todolistId2 = v1()
 
     const startState: TodoListType[] = [
-        { todoListId: todolistId1, title: 'What to learn', filter: 'all' },
-        { todoListId: todolistId2, title: 'What to buy', filter: 'all' },
+        { todolistId: todolistId1, title: 'What to learn', filter: 'all' },
+        { todolistId: todolistId2, title: 'What to buy', filter: 'all' },
     ]
 
     const action: ActionType  = ChangeTodolistFilterAC(todolistId2, 'completed')

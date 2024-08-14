@@ -1,6 +1,6 @@
 import React, {memo, useCallback, useMemo} from 'react';
 import {FilterValuesType, TaskType, TodoListType} from "../../App";
-import AddItemForm from "../addItemForm/addItemForm";
+import {AddItemForm} from "../addItemForm/AddItemForm";
 import {TransformTitle} from "../transformTItle/TransformTitle";
 import {Task} from "../task/Task";
 import IconButton from "@mui/material/IconButton";
@@ -14,37 +14,37 @@ import {ChangeTodolistFilterAC, ChangeTodolistTitleAC, RemoveTodolistAC} from ".
 import {MemoButton} from "../button/MemoButton";
 
 type TodolistPropsType = {
-    todoList: TodoListType
+    todolist: TodoListType
 }
 
-export const Todolist = memo(({todoList}: TodolistPropsType) => {
+export const Todolist = memo(({todolist}: TodolistPropsType) => {
     console.log('render todolist')
-    const {todoListId, filter, title} = todoList
+    const {todolistId, filter, title} = todolist
     const dispatch = useDispatch()
-    const tasks = useSelector<AppRootStateType, TaskType[]>(state => state.tasks[todoListId])
+    const tasks = useSelector<AppRootStateType, TaskType[]>(state => state.tasks[todolistId])
 
     const removeToDoList = useCallback(() => {
-        dispatch(RemoveTodolistAC(todoListId))
+        dispatch(RemoveTodolistAC(todolistId))
     }, [dispatch])
 
     const changeToDoListTitle = useCallback((newToDoListTitle: string) => {
-        dispatch(ChangeTodolistTitleAC(todoListId, newToDoListTitle))
+        dispatch(ChangeTodolistTitleAC(todolistId, newToDoListTitle))
     }, [dispatch])
     const addTask = useCallback((taskTitle: string) => {
-        dispatch(addTaskAC(todoListId, taskTitle))
+        dispatch(addTaskAC(todolistId, taskTitle))
     }, [dispatch])
-    const changeTaskFilter = (filter: FilterValuesType, todoListId: string) => {
-        dispatch(ChangeTodolistFilterAC(todoListId, filter))
+    const changeTaskFilter = (filter: FilterValuesType, todolistId: string) => {
+        dispatch(ChangeTodolistFilterAC(todolistId, filter))
     }
 
     const onAllClickHandler = useCallback(() => {
-        changeTaskFilter('all', todoListId)
+        changeTaskFilter('all', todolistId)
     }, [])
     const onActiveClickHandler = useCallback(() => {
-        changeTaskFilter('active', todoListId)
+        changeTaskFilter('active', todolistId)
     }, [])
     const onCompletedClickHandler = useCallback(() => {
-        changeTaskFilter('completed', todoListId)
+        changeTaskFilter('completed', todolistId)
     }, [])
 
     const filtredTasks: TaskType[] = useMemo(()=> {
@@ -73,7 +73,7 @@ export const Todolist = memo(({todoList}: TodolistPropsType) => {
                         {filtredTasks.map(task => {
                             return <Task
                                 key={task.taskId}
-                                todoListId={todoListId}
+                                todolistId={todolistId}
                                 task={task}
                             />
                         })}

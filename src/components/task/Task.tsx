@@ -10,22 +10,22 @@ import {TaskType} from "../../App";
 
 type TaskPropsType = {
     task: TaskType
-    todoListId: string
+    todolistId: string
 }
 
-export const Task = memo(({task, todoListId }:TaskPropsType) => {
+export const Task = memo(({task, todolistId }:TaskPropsType) => {
     console.log('render task')
     const {taskId, isDone, title} = task
     const dispatch = useDispatch()
 
     const removeTask = useCallback( () => {
-        dispatch(removeTaskAC(taskId, todoListId))
+        dispatch(removeTaskAC(taskId, todolistId))
     }, [dispatch])
     const changeStatusTask = useCallback( (isDone: boolean) => {
-        dispatch(changeStatusTaskAC(taskId, isDone, todoListId))
+        dispatch(changeStatusTaskAC(taskId, isDone, todolistId))
     }, [dispatch])
     const changeTaskTitle = useCallback((newTaskTitle: string) => {
-        dispatch(changeTitleTaskAC(newTaskTitle, taskId, todoListId))
+        dispatch(changeTitleTaskAC(newTaskTitle, taskId, todolistId))
     }, [dispatch])
 
     return (

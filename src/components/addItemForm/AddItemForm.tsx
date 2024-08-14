@@ -2,11 +2,11 @@ import React, {ChangeEvent, KeyboardEvent, memo, useState} from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
-type AddItemFormType = {
+export type AddItemFormType = {
     addItem: (itemTitle: string) => void
 }
 
-const AddItemForm = memo(({addItem}: AddItemFormType) => {
+export const AddItemForm = memo(({addItem}: AddItemFormType) => {
     console.log('render addItemForm')
     const [inputText, setInputText] = useState('')
     const [error, setError] = useState(false)
@@ -52,5 +52,3 @@ const AddItemForm = memo(({addItem}: AddItemFormType) => {
         </>
     );
 });
-
-export default AddItemForm;

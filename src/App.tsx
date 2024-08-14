@@ -2,7 +2,7 @@ import React, {useCallback, useState} from 'react';
 import './App.css';
 import {Todolist} from "./components/todolist/Todolist";
 import {v1} from "uuid";
-import AddItemForm from "./components/addItemForm/addItemForm";
+import {AddItemForm} from "./components/addItemForm/AddItemForm";
 import {Header} from "./components/header/Header";
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -16,7 +16,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./store/Store";
 
 export type TodoListType = {
-    todoListId: string
+    todolistId: string
     title: string
     filter: FilterValuesType
 }
@@ -27,7 +27,7 @@ export type TaskType = {
     isDone: boolean
 }
 
-type ThemeMode = 'dark' | 'light'
+export type ThemeMode = 'dark' | 'light'
 
 export type TasksStateType = {
     [todolistId: string]: TaskType[]
@@ -70,10 +70,10 @@ function App() {
                     <Grid container spacing={4}>
                         {todolists.map(tl => {
                             return (
-                                <Grid item key={tl.todoListId}>
+                                <Grid item key={tl.todolistId}>
                                     <Paper elevation={6} sx={{p: '30px'}}>
                                         <Todolist
-                                            todoList={tl}
+                                            todolist={tl}
                                         />
                                     </Paper>
                                 </Grid>
