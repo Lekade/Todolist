@@ -6,9 +6,9 @@ import {
 } from "../../store/decorators/ReduxStoreProviderDecorator";
 import {useSelector} from "react-redux";
 import {AppRootStateType} from "../../store/Store";
-import {TaskType} from "../../App";
 import {v1} from "uuid";
 import {fn} from "@storybook/test";
+import {TaskPriorities, TaskStatuses, TaskType} from "../../api/todolists-api";
 
 const meta: Meta<typeof Task> = {
   title: 'TODOLISTS/Task',
@@ -24,7 +24,18 @@ type Story = StoryObj<typeof meta>;
 
 const TaskWrapper = () => {
   let task = useSelector<AppRootStateType, TaskType>(state => state.tasks["todolistId1"][0])
-  if(!task){task = {taskId: v1(), title: "DEFAULT TASK", isDone: false}}
+  if(!task){task = {
+    id: v1(),
+    title: "DEFAULT TASK",
+    todoListId: "todolistId1",
+    description: '',
+    status: TaskStatuses.New,
+    priority: TaskPriorities.Low,
+    startDate: 0,
+    deadline: '',
+    order: 0,
+    addedDate: 0,
+  }}
   return <Task task={task} todolistId={"todolistId1"}/>
 }
 

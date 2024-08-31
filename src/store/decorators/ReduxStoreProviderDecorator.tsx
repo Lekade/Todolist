@@ -1,5 +1,5 @@
 import React, {ReactNode, useCallback, useState} from 'react'
-import { Provider } from 'react-redux';
+import {Provider} from 'react-redux';
 import {AppRootStateType, rootReducer} from "../Store";
 import {legacy_createStore} from "redux";
 import {v1} from "uuid";
@@ -7,20 +7,65 @@ import {createTheme, ThemeProvider} from "@mui/material";
 import {ThemeMode} from "../../App";
 import Switch from "@mui/material/Switch";
 import CssBaseline from "@mui/material/CssBaseline";
+import {TaskStatuses} from "../../api/todolists-api";
 
 const initialGlobalState: AppRootStateType = {
     todolists: [
-        {todolistId: "todolistId1", title: "What to learn", filter: "all"},
-        {todolistId: "todolistId2", title: "What to buy", filter: "all"}
+        {id: "todolistId1", title: "What to learn", filter: "all", addedDate: '', order: 0},
+        {id: "todolistId2", title: "What to buy", filter: "all", addedDate: '', order: 0}
     ] ,
     tasks: {
         ["todolistId1"]: [
-            {taskId: v1(), title: "HTML&CSS", isDone: false},
-            {taskId: v1(), title: "JS", isDone: true}
+            {
+                id: v1(),
+                title: "HTML&CSS",
+                todoListId: "todolistId1",
+                status: TaskStatuses.New,
+                description: '',
+                deadline: '',
+                addedDate: 0,
+                startDate: 0,
+                priority: 0,
+                order: 0
+            },
+            {
+                id: v1(),
+                title: "JS",
+                todoListId: "todolistId1",
+                status: TaskStatuses.Completed,
+                description: '',
+                deadline: '',
+                addedDate: 0,
+                startDate: 0,
+                priority: 0,
+                order: 0
+            }
         ],
         ["todolistId2"]: [
-            {taskId: v1(), title: "Milk", isDone: true},
-            {taskId: v1(), title: "React Book", isDone: false}
+            {
+                id: v1(),
+                title: "Milk",
+                todoListId: "todolistId2",
+                status: TaskStatuses.Completed,
+                description: '',
+                deadline: '',
+                addedDate: 0,
+                startDate: 0,
+                priority: 0,
+                order: 0
+            },
+            {
+                id: v1(),
+                title: "React Book",
+                todoListId: "todolistId2",
+                status: TaskStatuses.New,
+                description: '',
+                deadline: '',
+                addedDate: 0,
+                startDate: 0,
+                priority: 0,
+                order: 0
+            }
         ]
     }
 };

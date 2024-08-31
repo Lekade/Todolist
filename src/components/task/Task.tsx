@@ -6,7 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ListItem from '@mui/material/ListItem';
 import {changeStatusTaskAC, changeTitleTaskAC, removeTaskAC} from "../../store/tasks-reducer";
 import {useDispatch} from "react-redux";
-import {TaskType} from "../../App";
+import {TaskStatuses, TaskType} from "../../api/todolists-api";
 
 type TaskPropsType = {
     task: TaskType
@@ -15,27 +15,30 @@ type TaskPropsType = {
 
 export const Task = memo(({task, todolistId }:TaskPropsType) => {
     console.log('render task')
-    const {taskId, isDone, title} = task
+    const {id, status, title} = task
     const dispatch = useDispatch()
 
     const removeTask = useCallback( () => {
-        dispatch(removeTaskAC(taskId, todolistId))
+        dispatch(removeTaskAC(id, todolistId))
     }, [dispatch])
     const changeStatusTask = useCallback( (isDone: boolean) => {
-        dispatch(changeStatusTaskAC(taskId, isDone, todolistId))
+        const status = isDone ? TaskStatuses.Completed : TaskStatuses.New
+        dispatch(changeStatusTaskAC(id, status, todolistId))
     }, [dispatch])
     const changeTaskTitle = useCallback((newTaskTitle: string) => {
-        dispatch(changeTitleTaskAC(newTaskTitle, taskId, todolistId))
+        dispatch(changeTitleTaskAC(newTaskTitle, id, todolistId))
     }, [dispatch])
+
+
 
     return (
         <ListItem sx={{
             p: 0,
             justifyContent: 'space-between',
-            opacity: isDone ? 0.5 : 1,
+            opacity: status ? 0.5 : 1,
         }}>
-            <Checkbox onChange={e => changeStatusTask(e.currentTarget.checked)} checked={isDone}/>
-            <TransformTitle style={isDone ? 'task-done' : 'task'}  changeTitle={changeTaskTitle} title={title}/>
+            <Checkbox onChange={e => changeStatusTask(e.currentTarget.checked)} checked={status > 0}/>
+            <TransformTitle style={status ? 'task-done' : 'task'}  changeTitle={changeTaskTitle} title={title}/>
             <IconButton aria-label="delete" onClick={removeTask}>
                 <DeleteIcon fontSize="inherit"/>
             </IconButton>

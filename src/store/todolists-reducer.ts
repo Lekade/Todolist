@@ -1,4 +1,9 @@
-import {FilterValuesType, TodoListType} from "../App";
+import {TodolistType} from "../api/todolists-api";
+
+export type FilterValuesType = 'all' | 'active' | 'completed'
+export type TodolistDomainType = TodolistType & {
+    filter: FilterValuesType
+}
 
 export type AddTodolistActionType = {
     type: 'ADD-TODOLIST',
@@ -33,24 +38,24 @@ type ChangeTodolistTitleActionType = {
 
 export type ActionType = AddTodolistActionType | RemoveTodolistActionType | ChangeTodolistFilterActionType | ChangeTodolistTitleActionType
 
-const initializationTodolists:Array<TodoListType> = []
+const initializationTodolists:Array<TodolistDomainType> = []
 
-export const todolistsReducer = (todolists: Array<TodoListType> = initializationTodolists, action: ActionType): Array<TodoListType> => {
+export const todolistsReducer = (todolists: Array<TodolistDomainType> = initializationTodolists, action: ActionType): Array<TodolistDomainType> => {
     switch (action.type){
         case 'ADD-TODOLIST' :
             const {title, todolistId} = action.payload
-            return [{todolistId, title, filter: 'all'}, ...todolists]
+            return [{ id: todolistId, title, filter: 'all', addedDate: '', order: 0}, ...todolists]
         case 'REMOVE-TODOLIST' :{
             const {todolistId} = action.payload
-            return todolists.filter(tl => tl.todolistId !== todolistId)
+            return todolists.filter(tl => tl.id !== todolistId)
         }
         case 'CHANGE-TODOLIST-FILTER' : {
             const {filter, todolistId} = action.payload
-            return todolists.map(tl => tl.todolistId === todolistId ? {...tl, filter} : tl)
+            return todolists.map(tl => tl.id === todolistId ? {...tl, filter} : tl)
         }
         case 'CHANGE-TODOLIST-TITLE': {
             const {title, todolistId} = action.payload
-            return todolists.map(tl => tl.todolistId === todolistId ? {...tl, title} : tl)
+            return todolists.map(tl => tl.id === todolistId ? {...tl, title} : tl)
         }
 
         default:
