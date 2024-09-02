@@ -33,8 +33,8 @@ export const todolistsApi = {
     createTask(todolistId: string, title: string){
         return instance.post<ResponseType<{item: TaskType}>>(`/todo-lists/${todolistId}/tasks`, {title})
     },
-    updateTask(todolistId: string, taskId: string, title: string){
-        return instance.put<ResponseType<{item: TaskType}>>(`/todo-lists/${todolistId}/tasks/${taskId}`, {title})
+    updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType){
+        return instance.put<ResponseType<{item: TaskType}>>(`/todo-lists/${todolistId}/tasks/${taskId}`, model)
     },
 }
 
@@ -82,6 +82,7 @@ export type TaskType = {
     addedDate: number
 }
 
+// то что хочет принять сервер при обновлении таски
 export type UpdateTaskModelType = {
     title: string
     description: string
