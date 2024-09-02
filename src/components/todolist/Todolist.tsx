@@ -1,4 +1,4 @@
-import React, {memo, useCallback, useMemo} from 'react';
+import React, {memo, useCallback, useEffect, useMemo} from 'react';
 import {AddItemForm} from "../addItemForm/AddItemForm";
 import {TransformTitle} from "../transformTItle/TransformTitle";
 import {Task} from "../task/Task";
@@ -6,9 +6,9 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import styled from "styled-components";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import {addTaskAC} from "../../store/tasks-reducer";
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "../../store/Store";
+import {addTasks, getTasks} from "../../store/tasks-reducer";
+import {useSelector} from "react-redux";
+import {AppRootStateType, useAppDispatch} from "../../store/Store";
 import {
     ChangeTodolistFilterAC,
     ChangeTodolistTitleAC, FilterValuesType,
@@ -25,7 +25,7 @@ type TodolistPropsType = {
 export const Todolist = memo(({todolist}: TodolistPropsType) => {
     console.log('render todolist')
     const {id, filter, title} = todolist
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch();
     const tasks = useSelector<AppRootStateType, TaskType[]>(state => state.tasks[id])
 
     const removeToDoList = useCallback(() => {
@@ -36,7 +36,7 @@ export const Todolist = memo(({todolist}: TodolistPropsType) => {
         dispatch(ChangeTodolistTitleAC(id, newToDoListTitle))
     }, [dispatch])
     const addTask = useCallback((taskTitle: string) => {
-        dispatch(addTaskAC(id, taskTitle))
+        dispatch(addTasks(id, taskTitle))
     }, [dispatch])
     const changeTaskFilter = (filter: FilterValuesType, todolistId: string) => {
         dispatch(ChangeTodolistFilterAC(todolistId, filter))
@@ -61,6 +61,10 @@ export const Todolist = memo(({todolist}: TodolistPropsType) => {
         }
         return tasks
     }, [filter, tasks])
+
+    useEffect(()=>{
+        dispatch(getTasks(id))
+    },[])
 
     return (
         <div className='todolist'>
