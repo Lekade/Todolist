@@ -46,9 +46,6 @@ test('correct todolist should be added', () => {
 })
 
 test('correct todolist should change its name', () => {
-    let todolistId1 = v1()
-    let todolistId2 = v1()
-
     const action: ActionType = ChangeTodolistTitleAC(todolistId2 ,'New Todolist')
     const endState = todolistsReducer(startState, action)
 
@@ -57,9 +54,6 @@ test('correct todolist should change its name', () => {
 })
 
 test('correct filter of todolist should be changed', () => {
-    let todolistId1 = v1()
-    let todolistId2 = v1()
-
     const action: ActionType  = ChangeTodolistFilterAC(todolistId2, 'completed')
     const endState = todolistsReducer(startState, action)
 
