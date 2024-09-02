@@ -4,9 +4,9 @@ import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ListItem from '@mui/material/ListItem';
-import {changeStatusTaskAC, changeTitleTaskAC, removeTaskAC} from "../../store/tasks-reducer";
-import {useDispatch} from "react-redux";
+import { removeTask, updateTasksTC} from "../../store/tasks-reducer";
 import {TaskStatuses, TaskType} from "../../api/todolists-api";
+import {useAppDispatch} from "../../store/Store";
 
 type TaskPropsType = {
     task: TaskType
@@ -16,17 +16,18 @@ type TaskPropsType = {
 export const Task = memo(({task, todolistId }:TaskPropsType) => {
     console.log('render task')
     const {id, status, title} = task
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch();
 
-    const removeTask = useCallback( () => {
-        dispatch(removeTaskAC(id, todolistId))
+    const removeTaskHandler = useCallback( () => {
+        dispatch(removeTask(todolistId, id))
     }, [dispatch])
+
     const changeStatusTask = useCallback( (isDone: boolean) => {
         const status = isDone ? TaskStatuses.Completed : TaskStatuses.New
-        dispatch(changeStatusTaskAC(id, status, todolistId))
+        dispatch(updateTasksTC(task, 'status', status))
     }, [dispatch])
     const changeTaskTitle = useCallback((newTaskTitle: string) => {
-        dispatch(changeTitleTaskAC(newTaskTitle, id, todolistId))
+        dispatch(updateTasksTC(task,'title', newTaskTitle))
     }, [dispatch])
 
 
@@ -39,7 +40,7 @@ export const Task = memo(({task, todolistId }:TaskPropsType) => {
         }}>
             <Checkbox onChange={e => changeStatusTask(e.currentTarget.checked)} checked={status > 0}/>
             <TransformTitle style={status ? 'task-done' : 'task'}  changeTitle={changeTaskTitle} title={title}/>
-            <IconButton aria-label="delete" onClick={removeTask}>
+            <IconButton aria-label="delete" onClick={removeTaskHandler}>
                 <DeleteIcon fontSize="inherit"/>
             </IconButton>
         </ListItem>
