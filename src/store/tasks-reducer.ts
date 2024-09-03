@@ -41,7 +41,7 @@ export const tasksReducer = (state: TasksStateType = initializationTasks, action
             const {todolistId, taskId} = action.payload
             return {...state, [todolistId]: state[todolistId].filter(t => t.id !== taskId)}
         }
-        case 'CHANGE-TASK' : {
+        case 'UPDATE-TASK' : {
             const {task} = action.payload
             return  {...state, [task.todoListId]: state[task.todoListId].map(t => t.id === task.id ? task : t)}
         }
@@ -73,7 +73,7 @@ export const removeTaskAC = (todolistId: string, taskId: string) => ({
     }
 }) as const
 export const updateTaskAC = (task: TaskType) => ({
-    'type': 'CHANGE-TASK',
+    'type': 'UPDATE-TASK',
     payload: {
         task
     }
@@ -109,13 +109,14 @@ type changeTaskInput = 'title'| 'status'
 
 export const updateTasksTC = (task: TaskType, name: changeTaskInput, elModel: TaskStatuses | string) =>
     (dispatch: Dispatch, getState: ()=> AppRootStateType) => {
+    console.log(task.startDate)
 
             const model: UpdateTaskModelType = {
                 title: task.title,
                 description: task.description,
                 status: task.status,
                 priority: task.priority,
-                startDate: '',
+                startDate: task.startDate,
                 deadline: task.deadline
             }
 
