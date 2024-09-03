@@ -115,9 +115,30 @@ export const setTodolistsAC = (todos: TodolistType[]) => ({
     }
 }) as const
 
-export const getTodos = () => (dispatch: Dispatch, getState: any) => {
+export const getTodolists = () => (dispatch: Dispatch, getState: any) => {
     todolistsApi.getTodolist()
         .then(res => {
             dispatch(setTodolistsAC(res.data))
+        })
+}
+
+export const removeTodolist = (todolistId: string) => (dispatch: Dispatch) => {
+    todolistsApi.deleteTodo(todolistId)
+        .then(response => {
+            dispatch(RemoveTodolistAC(todolistId))
+        })
+}
+
+export const addTodolist = (title: string) => (dispatch: Dispatch) => {
+    todolistsApi.createTodo(title)
+        .then(response => {
+            dispatch(AddTodolistAC(response.data.data.item.id, title))
+        })
+}
+
+export const ChangeTodolistTitle = (todolistId: string, title: string) => (dispatch: Dispatch) => {
+    todolistsApi.updateTodo(todolistId, title)
+        .then(response => {
+            dispatch(ChangeTodolistTitleAC(todolistId, title))
         })
 }
