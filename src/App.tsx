@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import './App.css';
 import {Todolist} from "./components/todolist/Todolist";
-import {v1} from "uuid";
 import {AddItemForm} from "./components/addItemForm/AddItemForm";
 import {Header} from "./components/header/Header";
 import Container from '@mui/material/Container';
@@ -10,7 +9,8 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import {createTheme, ThemeProvider} from "@mui/material";
 import {
-    AddTodolistAC, getTodos, TodolistDomainType
+    addTodolist,
+    getTodolists, TodolistDomainType
 } from "./store/todolists-reducer";
 import {useSelector} from "react-redux";
 import {AppRootStateType, useAppDispatch} from "./store/Store";
@@ -25,8 +25,7 @@ function App() {
     const dispatch = useAppDispatch();
 
     const addToDOList = useCallback( (titleTodoList: string) => {
-        const newTodoListId = v1()
-        dispatch(AddTodolistAC(newTodoListId, titleTodoList))
+        dispatch(addTodolist(titleTodoList))
     }, [dispatch])
 
     const [themeMode, setThemeMode] = useState<ThemeMode>('light')
@@ -44,7 +43,7 @@ function App() {
     }, [themeMode])
 
     useEffect(()=>{
-        dispatch(getTodos())
+        dispatch(getTodolists())
     },[])
 
 

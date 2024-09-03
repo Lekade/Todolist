@@ -10,9 +10,8 @@ import {addTasks, getTasks} from "../../store/tasks-reducer";
 import {useSelector} from "react-redux";
 import {AppRootStateType, useAppDispatch} from "../../store/Store";
 import {
-    ChangeTodolistFilterAC,
-    ChangeTodolistTitleAC, FilterValuesType,
-    RemoveTodolistAC,
+    ChangeTodolistFilterAC, ChangeTodolistTitle,
+    FilterValuesType, removeTodolist,
     TodolistDomainType
 } from "../../store/todolists-reducer";
 import {MemoButton} from "../button/MemoButton";
@@ -29,11 +28,11 @@ export const Todolist = memo(({todolist}: TodolistPropsType) => {
     const tasks = useSelector<AppRootStateType, TaskType[]>(state => state.tasks[id])
 
     const removeToDoList = useCallback(() => {
-        dispatch(RemoveTodolistAC(id))
+        dispatch(removeTodolist(id))
     }, [dispatch])
 
-    const changeToDoListTitle = useCallback((newToDoListTitle: string) => {
-        dispatch(ChangeTodolistTitleAC(id, newToDoListTitle))
+    const changeToDoListTitleHandler = useCallback((newToDoListTitle: string) => {
+        dispatch(ChangeTodolistTitle(id, newToDoListTitle))
     }, [dispatch])
     const addTask = useCallback((taskTitle: string) => {
         dispatch(addTasks(id, taskTitle))
@@ -69,7 +68,7 @@ export const Todolist = memo(({todolist}: TodolistPropsType) => {
     return (
         <div className='todolist'>
             <TitleTodolistBlock>
-                <TransformTitle title={title} changeTitle={changeToDoListTitle}/>
+                <TransformTitle title={title} changeTitle={changeToDoListTitleHandler}/>
                 <IconButton aria-label="delete" onClick={removeToDoList} size="large">
                     <DeleteIcon fontSize="inherit"/>
                 </IconButton>
