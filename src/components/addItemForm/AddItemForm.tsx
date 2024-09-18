@@ -4,9 +4,10 @@ import TextField from '@mui/material/TextField';
 
 export type AddItemFormType = {
     addItem: (itemTitle: string) => void
+    disabled?: boolean
 }
 
-export const AddItemForm = memo(({addItem}: AddItemFormType) => {
+export const AddItemForm = memo(({addItem, disabled}: AddItemFormType) => {
     console.log('render addItemForm')
     const [inputText, setInputText] = useState('')
     const [error, setError] = useState(false)
@@ -39,6 +40,7 @@ export const AddItemForm = memo(({addItem}: AddItemFormType) => {
             <div>
                 <TextField
                     error={!!error}
+                    disabled={disabled}
                     id="outlined-basic"
                     label={error ? 'The field is required' : "Entar at title"}
                     variant="outlined"
@@ -47,7 +49,7 @@ export const AddItemForm = memo(({addItem}: AddItemFormType) => {
                     value={inputText}
                     size="small"
                 />
-                <Button sx={buttonStyles} variant="contained" onClick={addItemHandler} size="small">+</Button>
+                <Button disabled={disabled} sx={buttonStyles} variant="contained" onClick={addItemHandler} size="small">+</Button>
             </div>
         </>
     );

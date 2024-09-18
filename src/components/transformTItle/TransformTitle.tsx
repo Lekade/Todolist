@@ -6,15 +6,21 @@ type TransformTitleType = {
     title: string
     changeTitle: (newTitle: string) => void
     style?: string
+    disabled?:boolean
 }
 
-export const TransformTitle = memo(({title, changeTitle, style}: TransformTitleType) => {
+export const TransformTitle = memo(({title, changeTitle, style, disabled}: TransformTitleType) => {
     console.log('render transformTitle')
     const [editMode, setEditMode] = useState(false)
     const [inputValue, setInputValue] = useState<string>(title)
     const editModeHandler = () => {
-        setEditMode(!editMode)
-        changeTitle(inputValue)
+        if(editMode){
+            changeTitle(inputValue)
+        }
+        if(!disabled){
+            setEditMode(!editMode)
+        }
+
     }
     const changeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.currentTarget.value)
@@ -22,7 +28,7 @@ export const TransformTitle = memo(({title, changeTitle, style}: TransformTitleT
 
     return (
         editMode
-            ? <Input value={inputValue} onChange={changeInputHandler} onBlur={editModeHandler} autoFocus/>
+            ? <Input value={inputValue} onChange={changeInputHandler}  onBlur={editModeHandler} autoFocus/>
             : <Title className={style} onDoubleClick={editModeHandler}>{title}</Title>
     );
 });

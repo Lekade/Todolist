@@ -13,7 +13,7 @@ const meta: Meta<typeof Todolist> = {
     },
     tags: ['autodocs'],
     args:{
-        todolist: {id: "todolistId1", title: "What to learn", filter: "all", addedDate: '', order: 0}
+        todolist: {id: "todolistId1", title: "What to learn", filter: "all", addedDate: '', order: 0, entityStatus: "idle"}
     },
     decorators: [ReduxStoreProviderAndThemeDecorator]
 };

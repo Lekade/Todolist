@@ -7,13 +7,16 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import {MenuButton} from "./MenuButton";
 import Switch from '@mui/material/Switch';
-import {useTheme} from "@mui/material";
+import {LinearProgress, useTheme} from "@mui/material";
+import {useAppSelector} from "../../store/Store";
 
 type HeaderProps={
     changeModeHandler:()=>void
 }
 
 export function Header({changeModeHandler}:HeaderProps) {
+    const status = useAppSelector(state => state.app.status)
+
     const theme = useTheme();
     return (
         <Box sx={{ flexGrow: 1, marginBottom: '100px' }}>
@@ -36,6 +39,7 @@ export function Header({changeModeHandler}:HeaderProps) {
                     <MenuButton color="inherit">Faq</MenuButton>
                     <Switch onChange={changeModeHandler}/>
                 </Toolbar>
+                {status === 'loading' && <LinearProgress />}
             </AppBar>
         </Box>
     );

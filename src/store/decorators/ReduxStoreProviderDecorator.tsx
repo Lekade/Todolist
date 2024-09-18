@@ -11,8 +11,8 @@ import {TaskStatuses} from "../../api/todolists-api";
 
 const initialGlobalState: AppRootStateType = {
     todolists: [
-        {id: "todolistId1", title: "What to learn", filter: "all", addedDate: '', order: 0},
-        {id: "todolistId2", title: "What to buy", filter: "all", addedDate: '', order: 0}
+        {id: "todolistId1", title: "What to learn", filter: "all", addedDate: '', order: 0, entityStatus: "idle"},
+        {id: "todolistId2", title: "What to buy", filter: "all", addedDate: '', order: 0, entityStatus: "idle"}
     ] ,
     tasks: {
         ["todolistId1"]: [
@@ -26,7 +26,8 @@ const initialGlobalState: AppRootStateType = {
                 addedDate: 0,
                 startDate: 0,
                 priority: 0,
-                order: 0
+                order: 0,
+                entityStatus: 'idle'
             },
             {
                 id: v1(),
@@ -38,7 +39,8 @@ const initialGlobalState: AppRootStateType = {
                 addedDate: 0,
                 startDate: 0,
                 priority: 0,
-                order: 0
+                order: 0,
+                entityStatus: 'idle'
             }
         ],
         ["todolistId2"]: [
@@ -52,7 +54,8 @@ const initialGlobalState: AppRootStateType = {
                 addedDate: 0,
                 startDate: 0,
                 priority: 0,
-                order: 0
+                order: 0,
+                entityStatus: 'idle'
             },
             {
                 id: v1(),
@@ -64,10 +67,12 @@ const initialGlobalState: AppRootStateType = {
                 addedDate: 0,
                 startDate: 0,
                 priority: 0,
-                order: 0
+                order: 0,
+                entityStatus: 'idle'
             }
         ]
-    }
+    },
+    app:{status: 'loading', error: null}
 };
 
 const storyBookStore = legacy_createStore(rootReducer, initialGlobalState as any)
