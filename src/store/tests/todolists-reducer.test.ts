@@ -4,7 +4,7 @@ import {
     ChangeTodolistFilterAC, ChangeTodolistTitleAC,
     RemoveTodolistAC, TodolistDomainType,
     todolistsReducer
-} from './todolists-reducer'
+} from '../todolists-reducer'
 import { v1 } from 'uuid'
 
 let todolistId1:string
@@ -14,8 +14,8 @@ beforeEach(()=> {
     todolistId1 = v1()
     todolistId2 = v1()
     startState = [
-        { id: todolistId1, title: 'What to learn', filter: 'all', addedDate: '', order: 0 },
-        { id: todolistId2, title: 'What to buy', filter: 'all', addedDate: '', order: 0 },
+        { id: todolistId1, title: 'What to learn', filter: 'all', addedDate: '', order: 0, entityStatus: "idle" },
+        { id: todolistId2, title: 'What to buy', filter: 'all', addedDate: '', order: 0, entityStatus: "idle" },
     ]
 })
 // 1. Стартовый state
@@ -60,3 +60,4 @@ test('correct filter of todolist should be changed', () => {
     expect(endState[0].filter).toBe('all')
     expect(endState[1].filter).toBe(action.payload.filter)
 })
+
