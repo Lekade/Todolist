@@ -5,12 +5,14 @@ import Paper from "@mui/material/Paper";
 import {Todolist} from "../todolist/Todolist";
 import {addTodolist, getTodolists, TodolistDomainType} from "../../store/todolists-reducer";
 import {useSelector} from "react-redux";
-import {AppRootStateType, useAppDispatch} from "../../store/Store";
+import {AppRootStateType, useAppDispatch, useAppSelector} from "../../store/Store";
+import {Navigate} from "react-router-dom";
 
 export const TodolistsList = () => {
     console.log('render TodolistsList')
 
     const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const dispatch = useAppDispatch();
 
     const addTodolistHandler = useCallback( (titleTodoList: string) => {
@@ -18,9 +20,15 @@ export const TodolistsList = () => {
     }, [dispatch])
 
     useEffect(()=>{
+        if (!isLoggedIn) {
+            return
+        }
         dispatch(getTodolists())
     },[])
 
+    if(!isLoggedIn){
+        return <Navigate to='/login'/>
+    }
 
     return (
         <>
