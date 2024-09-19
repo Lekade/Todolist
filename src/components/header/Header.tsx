@@ -8,7 +8,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import {MenuButton} from "./MenuButton";
 import Switch from '@mui/material/Switch';
 import {LinearProgress, useTheme} from "@mui/material";
-import {useAppSelector} from "../../store/Store";
+import {useAppDispatch, useAppSelector} from "../../store/Store";
+import {logoutTC} from "../../store/auth-reducer";
 
 type HeaderProps={
     changeModeHandler:()=>void
@@ -16,6 +17,11 @@ type HeaderProps={
 
 export function Header({changeModeHandler}:HeaderProps) {
     const status = useAppSelector(state => state.app.status)
+    const dispatch = useAppDispatch()
+
+    const logoutHandler = () => {
+        dispatch(logoutTC())
+    }
 
     const theme = useTheme();
     return (
@@ -34,9 +40,7 @@ export function Header({changeModeHandler}:HeaderProps) {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         News
                     </Typography>
-                    <MenuButton color="inherit" background={theme.palette.primary.main}>Login</MenuButton>
-                    <MenuButton color="inherit">Logout</MenuButton>
-                    <MenuButton color="inherit">Faq</MenuButton>
+                    <MenuButton onClick={logoutHandler} color="inherit">Logout</MenuButton>
                     <Switch onChange={changeModeHandler}/>
                 </Toolbar>
                 {status === 'loading' && <LinearProgress />}
