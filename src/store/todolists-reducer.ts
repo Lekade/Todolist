@@ -41,6 +41,7 @@ type ChangeTodolistTitleActionType = {
 }
 
 export type SetTodolistsActionType = ReturnType<typeof setTodolistsAC>
+export type ClearTodosDataAT = ReturnType<typeof clearTodosDataAC>
 
 export type ActionType =
     AddTodolistActionType
@@ -49,6 +50,7 @@ export type ActionType =
     | ChangeTodolistTitleActionType
     | SetTodolistsActionType
     | ReturnType<typeof changeTodolistEntityStatusAC>
+    | ClearTodosDataAT
 
 const initializationTodolists: Array<TodolistDomainType> = []
 
@@ -72,11 +74,12 @@ export const todolistsReducer = (todolists: Array<TodolistDomainType> = initiali
             const {title, todolistId} = action.payload
             return todolists.map(tl => tl.id === todolistId ? {...tl, title} : tl)
         }
-        case "CHANGE-TODOLIST-ENTITY-STATUS": {
+        case 'CHANGE-TODOLIST-ENTITY-STATUS': {
             const {id, entityStatus} = action.payload
             return todolists.map(tl => tl.id === id ? {...tl, entityStatus} : tl)
         }
-
+        case 'CLEAR-TODOS-DATA':
+            return []
         default:
             return todolists
     }
@@ -134,6 +137,10 @@ export const changeTodolistEntityStatusAC = (id: string, entityStatus: RequestSt
         id,
         entityStatus
     }
+}) as const
+
+export const clearTodosDataAC = () => ({
+    type: 'CLEAR-TODOS-DATA'
 }) as const
 
 export const getTodolists = () => (dispatch: Dispatch) => {

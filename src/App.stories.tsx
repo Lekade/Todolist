@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from "react";
-import App from "./App";
+import {App} from "./App";
 import {ReduxStoreProviderDecorator} from "./store/decorators/ReduxStoreProviderDecorator";
 
 const meta: Meta<typeof App> = {
