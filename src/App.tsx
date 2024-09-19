@@ -1,18 +1,27 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import './App.css';
 import {Header} from "./components/header/Header";
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import {createTheme, ThemeProvider} from "@mui/material";
-import {TodolistsList} from "./components/todolistsList/TodolistsList";
 import {ErrorSnackbar} from "./components/errorSnackbar/ErrorSnackbar";
+import {Outlet} from "react-router-dom";
+import {useAppDispatch, useAppSelector} from "./store/Store";
+import {meTC} from "./store/auth-reducer";
+import CircularProgress from '@mui/material/CircularProgress'
 
 
 export type ThemeMode = 'dark' | 'light'
 
 
-function App() {
+export const App = () => {
     console.log('render App')
+    const dispatch = useAppDispatch()
+    const isInitialized = useAppSelector(state => state.app.isInitialized)
+
+    useEffect(()=>{
+        dispatch(meTC())
+    }, [])
 
     const [themeMode, setThemeMode] = useState<ThemeMode>('light')
     const theme = createTheme({
@@ -29,6 +38,16 @@ function App() {
     }, [themeMode])
 
 
+
+    if (!isInitialized) {
+        return (
+            <div style={{ position: 'fixed', top: '30%', textAlign: 'center', width: '100%' }}>
+                <CircularProgress />
+            </div>
+        )
+    }
+
+
     return (
         <div className="App">
             <ErrorSnackbar />
@@ -36,11 +55,9 @@ function App() {
                 <CssBaseline />
                 <Container fixed>
                     <Header changeModeHandler={changeModeHandler}/>
-                    <TodolistsList/>
+                    <Outlet/>
                 </Container>
             </ThemeProvider>
         </div>
     )
 }
-
-export default App;
