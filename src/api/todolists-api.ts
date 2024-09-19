@@ -8,6 +8,18 @@ const instance = axios.create({
     }
 })
 
+export const authAPI  = {
+    login(params: LoginParamsType){
+        return instance.post<ResponseType<{ userId: number }>>('/auth/login', params)
+    },
+    me(){
+        return instance.get<ResponseType<{id: number, email: string, login: string}>>('/auth/me')
+    },
+    logout(){
+        return instance.delete<ResponseType>('/auth/login')
+    }
+}
+
 export const todolistsApi = {
     getTodolist(){
         return instance.get<TodolistType[]>(`/todo-lists`)
@@ -96,4 +108,10 @@ type GetTasksResponse = {
     items: TaskType[]
     totalCount: number
     error: string | null
+}
+
+export type LoginParamsType = {
+    email: string,
+    password: string,
+    rememberMe: boolean
 }
