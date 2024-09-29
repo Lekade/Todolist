@@ -6,12 +6,12 @@ import IconButton from "@mui/material/IconButton"
 import DeleteIcon from "@mui/icons-material/Delete"
 import styled from "styled-components"
 import ButtonGroup from "@mui/material/ButtonGroup"
-import { addTasks, getTasks, TaskDomainType } from "store/tasks-slice"
+import { addTask, getTasks, TaskDomainType } from "store/tasks-slice"
 import { useSelector } from "react-redux"
 import { AppRootStateType, useAppDispatch } from "store/Store"
 import {
-  ChangeTodolistFilter,
-  ChangeTodolistTitleTC,
+  changeTodolistFilter,
+  changeTodolistTitle,
   FilterValuesType,
   removeTodolist,
   TodolistDomainType,
@@ -29,24 +29,24 @@ export const Todolist = memo(({ todolist }: TodolistPropsType) => {
   const dispatch = useAppDispatch()
   const tasks = useSelector<AppRootStateType, TaskDomainType[]>((state) => state.tasks[id])
 
-  const removeToDoList = useCallback(() => {
+  const removeTodoListHandler = useCallback(() => {
     dispatch(removeTodolist(id))
   }, [dispatch])
 
   const changeToDoListTitleHandler = useCallback(
-    (newToDoListTitle: string) => {
-      dispatch(ChangeTodolistTitleTC(id, newToDoListTitle))
+    (title: string) => {
+      dispatch(changeTodolistTitle({ id, title }))
     },
     [dispatch],
   )
-  const addTask = useCallback(
-    (taskTitle: string) => {
-      dispatch(addTasks(id, taskTitle))
+  const addTaskHandler = useCallback(
+    (title: string) => {
+      dispatch(addTask({ todoListId: id, title }))
     },
     [dispatch],
   )
   const changeTaskFilter = (filter: FilterValuesType, id: string) => {
-    dispatch(ChangeTodolistFilter({ id, filter }))
+    dispatch(changeTodolistFilter({ id, filter }))
   }
 
   const onAllClickHandler = useCallback(() => {
@@ -77,17 +77,22 @@ export const Todolist = memo(({ todolist }: TodolistPropsType) => {
     <div className="todolist">
       <TitleTodolistBlock>
         <TransformTitle title={title} changeTitle={changeToDoListTitleHandler} disabled={entityStatus === "loading"} />
-        <IconButton aria-label="delete" onClick={removeToDoList} size="large" disabled={entityStatus === "loading"}>
+        <IconButton
+          aria-label="delete"
+          onClick={removeTodoListHandler}
+          size="large"
+          disabled={entityStatus === "loading"}
+        >
           <DeleteIcon fontSize="inherit" />
         </IconButton>
       </TitleTodolistBlock>
-      <AddItemForm addItem={addTask} disabled={entityStatus === "loading"} />
+      <AddItemForm addItem={addTaskHandler} disabled={entityStatus === "loading"} />
       {filtredTasks.length === 0 ? (
         <p>Your taskslist is empty</p>
       ) : (
         <TasksContainer>
           {filtredTasks.map((task) => {
-            return <Task key={task.id} todolistId={id} task={task} />
+            return <Task key={task.id} todoListId={id} task={task} />
           })}
         </TasksContainer>
       )}

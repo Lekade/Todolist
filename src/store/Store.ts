@@ -20,9 +20,9 @@ export const store = configureStore({
 
 // определить автоматически тип всего объекта состояния
 export type AppRootStateType = ReturnType<typeof store.getState>
-export type AppDispatchType = ThunkDispatch<AppRootStateType, unknown, AnyAction>
+export type AppDispatch = ThunkDispatch<AppRootStateType, unknown, AnyAction>
 
-export const useAppDispatch = useDispatch<AppDispatchType>
+export const useAppDispatch = useDispatch<AppDispatch>
 export const useAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelector
 // а это, чтобы можно было в консоли браузера обращаться к store в любой момент
 // @ts-ignore

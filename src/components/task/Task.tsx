@@ -4,36 +4,36 @@ import Checkbox from "@mui/material/Checkbox"
 import IconButton from "@mui/material/IconButton"
 import DeleteIcon from "@mui/icons-material/Delete"
 import ListItem from "@mui/material/ListItem"
-import { removeTaskTC, TaskDomainType, updateTasksTC } from "store/tasks-slice"
+import { removeTask, TaskDomainType, updateTask } from "store/tasks-slice"
 import { TaskStatuses } from "api/todolists-api"
 import { useAppDispatch } from "store/Store"
 
 type TaskPropsType = {
   task: TaskDomainType
-  todolistId: string
+  todoListId: string
 }
 
-export const Task = memo(({ task, todolistId }: TaskPropsType) => {
+export const Task = memo(({ task, todoListId }: TaskPropsType) => {
   console.log("render task")
   const { id, status, title, entityStatus } = task
   const dispatch = useAppDispatch()
 
   const removeTaskHandler = useCallback(() => {
-    dispatch(removeTaskTC(todolistId, id))
+    dispatch(removeTask({ todoListId, id }))
   }, [dispatch])
 
   const changeStatusTask = useCallback(
     (isDone: boolean) => {
       const status = isDone ? TaskStatuses.Completed : TaskStatuses.New
-      dispatch(updateTasksTC(task, { status }))
+      dispatch(updateTask({ task, model: { status } }))
     },
-    [dispatch, task],
+    [dispatch, task, status],
   )
   const changeTaskTitle = useCallback(
-    (newTaskTitle: string) => {
-      dispatch(updateTasksTC(task, { title: newTaskTitle }))
+    (title: string) => {
+      dispatch(updateTask({ task, model: { title } }))
     },
-    [dispatch, task],
+    [dispatch, task, title],
   )
 
   return (

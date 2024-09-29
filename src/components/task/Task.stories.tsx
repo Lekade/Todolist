@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import React from "react"
 import { Task } from "./Task"
-import { ReduxStoreProviderAndThemeDecorator } from "../../store/decorators/ReduxStoreProviderDecorator"
+import { ReduxStoreProviderAndThemeDecorator } from "store/decorators/ReduxStoreProviderDecorator"
 import { useSelector } from "react-redux"
-import { AppRootStateType } from "../../store/Store"
+import { AppRootStateType } from "store/Store"
 import { v1 } from "uuid"
-import { TaskPriorities, TaskStatuses } from "../../api/todolists-api"
+import { TaskPriorities, TaskStatuses } from "api/todolists-api"
 import { TaskDomainType } from "store/tasks-slice"
 
 const meta: Meta<typeof Task> = {
@@ -30,14 +30,14 @@ const TaskWrapper = () => {
       description: "",
       status: TaskStatuses.New,
       priority: TaskPriorities.Low,
-      startDate: 0,
+      startDate: "",
       deadline: "",
-      order: 0,
-      addedDate: 0,
+      order: "",
+      addedDate: "",
       entityStatus: "idle",
     }
   }
-  return <Task task={task} todolistId={"todolistId1"} />
+  return <Task task={task} todoListId={"todolistId1"} />
 }
 
 export const TaskStory: Story = {

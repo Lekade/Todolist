@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid"
 import { AddItemForm } from "../addItemForm/AddItemForm"
 import Paper from "@mui/material/Paper"
 import { Todolist } from "../todolist/Todolist"
-import { addTodolist, getTodolists, selectTodos, TodolistDomainType } from "store/todolists-slice"
+import { addTodolist, getTodos, TodolistDomainType } from "store/todolists-slice"
 import { useSelector } from "react-redux"
 import { AppRootStateType, useAppDispatch, useAppSelector } from "store/Store"
 import { Navigate } from "react-router-dom"
@@ -27,7 +27,7 @@ export const TodolistsList = () => {
     if (!isLoggedIn) {
       return
     }
-    dispatch(getTodolists())
+    dispatch(getTodos())
   }, [])
 
   if (!isLoggedIn) {

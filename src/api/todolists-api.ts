@@ -20,7 +20,7 @@ export const authAPI = {
   },
 }
 
-export const todolistsApi = {
+export const todolistsAPI = {
   getTodolist() {
     return instance.get<TodolistType[]>(`/todo-lists`)
   },
@@ -86,12 +86,12 @@ export type TaskType = {
   title: string
   status: TaskStatuses
   priority: TaskPriorities
-  startDate: number
+  startDate: string
   deadline: string
   id: string
   todoListId: string
-  order: number
-  addedDate: number
+  order: string
+  addedDate: string
 }
 
 // то что хочет принять сервер при обновлении таски
@@ -104,7 +104,7 @@ export type UpdateTaskModelType = {
   deadline: string
 }
 
-type GetTasksResponse = {
+export type GetTasksResponse = {
   items: TaskType[]
   totalCount: number
   error: string | null
