@@ -9,7 +9,7 @@ import { MenuButton } from "./MenuButton"
 import Switch from "@mui/material/Switch"
 import { LinearProgress, useTheme } from "@mui/material"
 import { useAppDispatch, useAppSelector } from "store/Store"
-import { logoutTC } from "store/auth-slice"
+import { logout } from "store/auth-slice"
 import { selectAppStatus } from "store/app-slice"
 
 type HeaderProps = {
@@ -21,7 +21,7 @@ export function Header({ changeModeHandler }: HeaderProps) {
   const dispatch = useAppDispatch()
 
   const logoutHandler = () => {
-    dispatch(logoutTC())
+    dispatch(logout())
   }
 
   const theme = useTheme()

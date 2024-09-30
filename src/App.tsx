@@ -7,7 +7,7 @@ import { createTheme, ThemeProvider } from "@mui/material"
 import { ErrorSnackbar } from "components/errorSnackbar/ErrorSnackbar"
 import { Outlet } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "store/Store"
-import { meTC } from "store/auth-slice"
+import { me } from "store/auth-slice"
 import CircularProgress from "@mui/material/CircularProgress"
 import { selectIsInitialized } from "store/app-slice"
 
@@ -19,7 +19,7 @@ export const App = () => {
   const isInitialized = useAppSelector(selectIsInitialized)
 
   useEffect(() => {
-    dispatch(meTC())
+    dispatch(me())
   }, [])
 
   const [themeMode, setThemeMode] = useState<ThemeMode>("light")

@@ -9,7 +9,7 @@ import TextField from "@mui/material/TextField"
 import Button from "@mui/material/Button"
 import { useFormik } from "formik"
 import { useAppDispatch, useAppSelector } from "store/Store"
-import { loginTC, selectIsLoggedIn } from "store/auth-slice"
+import { login, selectIsLoggedIn } from "store/auth-slice"
 import { Navigate } from "react-router-dom"
 
 export const Login = () => {
@@ -43,7 +43,7 @@ export const Login = () => {
       return errors
     },
     onSubmit: (values) => {
-      dispatch(loginTC(values))
+      dispatch(login(values))
       formik.resetForm()
     },
   })
