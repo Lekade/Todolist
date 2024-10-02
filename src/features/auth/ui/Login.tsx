@@ -11,6 +11,7 @@ import { useFormik } from "formik"
 import { login, selectIsLoggedIn } from "features/auth/model/auth-slice"
 import { Navigate } from "react-router-dom"
 import { useAppDispatch, useAppSelector } from "common/hooks"
+import { BaseResponseType } from "common/types"
 
 export const Login = () => {
   const dispatch = useAppDispatch()
@@ -44,6 +45,14 @@ export const Login = () => {
     },
     onSubmit: (values) => {
       dispatch(login(values))
+        .unwrap()
+        .catch((err: BaseResponseType) => {
+          if (err.fieldsErrors) {
+            err.fieldsErrors.forEach((el) => {
+              formik.setFieldError(el.field, el.error)
+            })
+          }
+        })
       formik.resetForm()
     },
   })
@@ -70,9 +79,13 @@ export const Login = () => {
             </FormLabel>
             <FormGroup>
               <TextField label="Email" margin="normal" {...formik.getFieldProps("email")} />
-              {formik.touched.email && formik.errors.email ? <div>{formik.errors.email}</div> : null}
+              {formik.touched.email && formik.errors.email ? (
+                <div style={{ color: "red" }}>{formik.errors.email}</div>
+              ) : null}
               <TextField type="password" label="Password" margin="normal" {...formik.getFieldProps("password")} />
-              {formik.touched.password && formik.errors.password ? <div>{formik.errors.password}</div> : null}
+              {formik.touched.password && formik.errors.password ? (
+                <div style={{ color: "red" }}>{formik.errors.password}</div>
+              ) : null}
               <FormControlLabel
                 label={"Remember me"}
                 control={<Checkbox checked={formik.values.rememberMe} {...formik.getFieldProps("rememberMe")} />}
