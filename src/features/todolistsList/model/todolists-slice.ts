@@ -4,6 +4,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { createAppAsyncThunk } from "common/utils/create-app-async-thunk"
 import { handleServerAppError, handleServerNetworkError } from "common/utils"
 import { ResultCode } from "common/enums"
+import { thunkTryCatch } from "common/utils/thunkTryCatch"
 
 export type FilterValuesType = "all" | "active" | "completed"
 export type TodolistDomainType = TodolistType & {
@@ -73,15 +74,11 @@ export const getTodos = createAppAsyncThunk<{ todos: TodolistType[] }, undefined
   `${todosSlice.name}/getTodos`,
   async (_, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI
-    try {
-      dispatch(setAppStatus({ status: "loading" }))
+    return thunkTryCatch(thunkAPI, async () => {
       const res = await todolistsAPI.getTodolist()
       dispatch(setAppStatus({ status: "succeeded" }))
       return { todos: res.data }
-    } catch (e) {
-      handleServerNetworkError(e, dispatch)
-      return rejectWithValue(null)
-    }
+    })
   },
 )
 
@@ -89,23 +86,17 @@ export const addTodolist = createAppAsyncThunk<{ todo: TodolistType }, string>(
   `${todosSlice}/addTodolist`,
   async (title, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI
-    try {
-      dispatch(setAppStatus({ status: "loading" }))
+    return thunkTryCatch(thunkAPI, async () => {
       const res = await todolistsAPI.createTodo(title)
       if (res.data.resultCode === ResultCode.Success) {
-        dispatch(setAppStatus({ status: "succeeded" }))
         return { todo: res.data.data.item }
       } else {
         handleServerAppError(res.data, dispatch)
         return rejectWithValue(null)
       }
-    } catch (e) {
-      handleServerNetworkError(e, dispatch)
-      return rejectWithValue(null)
-    }
+    })
   },
 )
-
 export const removeTodolist = createAppAsyncThunk<{ id: string }, string>(
   `${todosSlice.name}/removeTodolist`,
   async (id, thunkAPI) => {
@@ -115,7 +106,6 @@ export const removeTodolist = createAppAsyncThunk<{ id: string }, string>(
       const res = await todolistsAPI.deleteTodo(id)
       if (res.data.resultCode === ResultCode.Success) {
         dispatch(changeTodolistEntityStatus({ id, entityStatus: "succeeded" }))
-        dispatch(setAppStatus({ status: "succeeded" }))
         return { id }
       } else {
         handleServerAppError(res.data, dispatch)

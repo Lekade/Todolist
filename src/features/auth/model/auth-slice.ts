@@ -45,7 +45,7 @@ export const login = createAppAsyncThunk<any, LoginParamsType>(`${authSlice.name
       return { isLoggedIn: true }
     } else {
       handleServerAppError(res.data, dispatch)
-      return rejectWithValue(null)
+      return rejectWithValue(res.data)
     }
   } catch (e) {
     handleServerNetworkError(e, dispatch)
@@ -60,7 +60,7 @@ export const me = createAppAsyncThunk<any, undefined>(`${authSlice.name}/me`, as
     if (res.data.resultCode === ResultCode.Success) {
       return { isLoggedIn: true }
     } else {
-      handleServerAppError(res.data, dispatch)
+      handleServerAppError(res.data, dispatch, false)
       return rejectWithValue(null)
     }
   } catch (e) {
