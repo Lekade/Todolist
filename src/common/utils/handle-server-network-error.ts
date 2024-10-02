@@ -1,21 +1,18 @@
+import axios, { AxiosError } from "axios"
+import { setAppError, setAppStatus } from "app/app-slice"
 import { Dispatch } from "redux"
-import { ResponseType } from "api/todolists-api"
-import { setAppError, setAppStatus } from "store/app-slice"
-import { AppDispatch } from "store/Store"
-import axios from "axios"
 
-export const handleServerAppError = <D>(data: ResponseType<D>, dispatch: Dispatch) => {
-  if (data.messages.length) {
-    dispatch(setAppError({ error: data.messages[0] }))
-  } else {
-    dispatch(setAppError({ error: "Some error occurred" }))
-  }
-  dispatch(setAppStatus({ status: "failed" }))
-}
+/**
+ * Handles network errors by determining the type of error and dispatching actions to set error and status.
+ *
+ * @param {unknown} err - The error object, which could be an AxiosError, a native Error, or another type.
+ * @param {Dispatch} dispatch - The Redux dispatch function.
+ *
+ * @returns {void} This function does not return anything.
+ */
 
-export const handleServerNetworkError = (err: unknown, dispatch: AppDispatch): void => {
+export const handleServerNetworkError = (err: unknown, dispatch: Dispatch): void => {
   let errorMessage = "Some error occurred"
-
   // Проверка на наличие axios ошибки
   if (axios.isAxiosError(err)) {
     // err.response?.data?.message - например получение тасок с невалидной todolistId
