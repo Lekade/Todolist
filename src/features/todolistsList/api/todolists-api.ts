@@ -60,7 +60,7 @@ export type UpdateTaskModelType = {
   description: string
   status: TaskStatuses
   priority: TaskPriorities
-  startDate: string | number
+  startDate: string
   deadline: string
 }
 
