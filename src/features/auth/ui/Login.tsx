@@ -7,55 +7,12 @@ import FormGroup from "@mui/material/FormGroup"
 import FormLabel from "@mui/material/FormLabel"
 import TextField from "@mui/material/TextField"
 import Button from "@mui/material/Button"
-import { useFormik } from "formik"
-import { login, selectIsLoggedIn } from "features/auth/model/auth-slice"
+
 import { Navigate } from "react-router-dom"
-import { useAppDispatch, useAppSelector } from "common/hooks"
-import { BaseResponseType } from "common/types"
+import { useLogin } from "features/auth/lib/useLogin"
 
 export const Login = () => {
-  const dispatch = useAppDispatch()
-  const isLoggedIn = useAppSelector(selectIsLoggedIn)
-
-  type FormikErrorType = {
-    email?: string
-    password?: string
-    rememberMe?: boolean
-  }
-
-  const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-      rememberMe: false,
-    },
-    validate: (values) => {
-      const errors: FormikErrorType = {}
-      if (!values.email) {
-        errors.email = "Required"
-      } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-        errors.email = "Invalid email address"
-      }
-      if (!values.password) {
-        errors.password = "Required"
-      } else if (values.password.length < 6) {
-        errors.password = "length of at least 6 characters"
-      }
-      return errors
-    },
-    onSubmit: (values) => {
-      dispatch(login(values))
-        .unwrap()
-        .catch((err: BaseResponseType) => {
-          if (err.fieldsErrors) {
-            err.fieldsErrors.forEach((el) => {
-              formik.setFieldError(el.field, el.error)
-            })
-          }
-        })
-      formik.resetForm()
-    },
-  })
+  const { formik, isLoggedIn } = useLogin()
 
   if (isLoggedIn) {
     return <Navigate to="/" />
