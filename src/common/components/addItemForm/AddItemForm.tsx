@@ -3,28 +3,30 @@ import Button from "@mui/material/Button"
 import TextField from "@mui/material/TextField"
 
 export type AddItemFormType = {
-  addItem: (itemTitle: string) => void
+  addItem: (itemTitle: string) => Promise<any>
   disabled?: boolean
 }
 
 export const AddItemForm = memo(({ addItem, disabled }: AddItemFormType) => {
-  console.log("render addItemForm")
-  const [inputText, setInputText] = useState("")
-  const [error, setError] = useState(false)
+  const [title, setTitle] = useState("")
+  const [error, setError] = useState<string | null>(null)
   const ChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setInputText(e.currentTarget.value)
-    setError(false)
+    setTitle(e.currentTarget.value)
+    setError(null)
   }
   const addItemHandler = () => {
-    if (inputText.trim()) {
-      error && setError(false)
-      addItem(inputText.trim())
-      setInputText("")
+    const trimTitle = title.trim()
+    if (trimTitle) {
+      if (trimTitle.length > 100) {
+        return setError("You have more than 100 characters")
+      }
+      error && setError(null)
+      addItem(trimTitle).then(() => setTitle(""))
     } else {
-      setError(true)
+      setError("The field is required")
     }
   }
-  const keyDownAddTaskInput = (e: KeyboardEvent<HTMLInputElement>) => {
+  const keyDownAddItemHandler = (e: KeyboardEvent<HTMLInputElement>) => {
     e.key === "Enter" && addItemHandler()
   }
 
@@ -42,11 +44,11 @@ export const AddItemForm = memo(({ addItem, disabled }: AddItemFormType) => {
           error={!!error}
           disabled={disabled}
           id="outlined-basic"
-          label={error ? "The field is required" : "Entar at title"}
+          label={error ? error : "Entar at title"}
           variant="outlined"
           onChange={ChangeInputHandler}
-          onKeyDown={keyDownAddTaskInput}
-          value={inputText}
+          onKeyDown={keyDownAddItemHandler}
+          value={title}
           size="small"
         />
         <Button disabled={disabled} sx={buttonStyles} variant="contained" onClick={addItemHandler} size="small">
