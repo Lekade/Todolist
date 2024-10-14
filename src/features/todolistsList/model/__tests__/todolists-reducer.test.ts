@@ -1,7 +1,6 @@
 import { v1 } from "uuid"
 import {
   addTodolist,
-  changeTodolistEntityStatus,
   changeTodolistFilter,
   changeTodolistTitle,
   FilterValuesType,
@@ -10,9 +9,9 @@ import {
   TodolistDomainType,
   todos,
 } from "features/todolistsList/model/todolists-slice"
-import { TodolistType } from "features/todolistsList/api/todolists-api"
 import { RequestStatusType } from "app/app-slice"
 import { TestAction } from "common/types/TestAction"
+import { TodolistType } from "features/todolistsList/api/todolistsAPI.types"
 
 let todolistId1: string
 let todolistId2: string
@@ -90,14 +89,4 @@ test("todolists should be added", () => {
   const endState = todos([], action)
 
   expect(endState.length).toBe(2)
-})
-test("correct entity status of todolist should be changed", () => {
-  let newStatus: RequestStatusType = "loading"
-
-  const action = changeTodolistEntityStatus({ id: todolistId2, entityStatus: newStatus })
-
-  const endState = todos(startState, action)
-
-  expect(endState[0].entityStatus).toBe("idle")
-  expect(endState[1].entityStatus).toBe(newStatus)
 })

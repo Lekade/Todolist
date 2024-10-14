@@ -8,7 +8,7 @@ import {
 } from "features/todolistsList/model/tasks-slice"
 import { TestAction } from "common/types/TestAction"
 import { addTodolist, getTodos, removeTodolist } from "features/todolistsList/model/todolists-slice"
-import { TaskPriorities, TaskStatuses } from "common/enums"
+import { TaskPriorities, TaskStatuses } from "features/todolistsList/lib/enums"
 
 let startState: TasksStateType = {}
 beforeEach(() => {
