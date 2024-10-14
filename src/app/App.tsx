@@ -14,7 +14,6 @@ import { useAppDispatch, useAppSelector } from "common/hooks"
 export type ThemeMode = "dark" | "light"
 
 export const App = () => {
-  console.log("render App")
   const dispatch = useAppDispatch()
   const isInitialized = useAppSelector(selectIsInitialized)
 

@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { createSlice, isFulfilled, isPending, isRejected, PayloadAction } from "@reduxjs/toolkit"
+import { AnyAction } from "redux"
 
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed"
 
@@ -14,15 +15,29 @@ const appSlice = createSlice({
   name: "app",
   initialState,
   reducers: {
-    setAppStatus: (state, action: PayloadAction<{ status: RequestStatusType }>) => {
-      state.status = action.payload.status
-    },
     setIsInitialized: (state, action: PayloadAction<{ isInitialized: boolean }>) => {
       state.isInitialized = action.payload.isInitialized
     },
     setAppError: (state, action: PayloadAction<{ error: string | null }>) => {
       state.error = action.payload.error
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addMatcher(isPending, (state) => {
+        state.status = "loading"
+      })
+      .addMatcher(isFulfilled, (state) => {
+        state.status = "succeeded"
+      })
+      .addMatcher(isRejected, (state, action: AnyAction) => {
+        state.status = "failed"
+        if (action.payload) {
+          state.error = action.payload.messages[0]
+        } else {
+          state.error = action.error.message ? action.error.message : "Some error occurred"
+        }
+      })
   },
   selectors: {
     selectAppStatus: (state) => state.status,
@@ -32,5 +47,5 @@ const appSlice = createSlice({
 })
 
 export const app = appSlice.reducer
-export const { setAppStatus, setIsInitialized, setAppError } = appSlice.actions
+export const { setIsInitialized, setAppError } = appSlice.actions
 export const { selectAppStatus, selectAppError, selectIsInitialized } = appSlice.selectors
