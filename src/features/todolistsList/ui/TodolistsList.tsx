@@ -11,15 +11,13 @@ import { selectIsLoggedIn } from "features/auth/model/auth-slice"
 import { useAppDispatch, useAppSelector } from "common/hooks"
 
 export const TodolistsList = () => {
-  console.log("render TodolistsList")
-
   const todos = useSelector<AppRootStateType, TodolistDomainType[]>((state) => state.todos)
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
   const dispatch = useAppDispatch()
 
   const addTodolistHandler = useCallback(
     (titleTodoList: string) => {
-      dispatch(addTodolist(titleTodoList))
+      return dispatch(addTodolist(titleTodoList))
     },
     [dispatch],
   )
