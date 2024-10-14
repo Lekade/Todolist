@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from "react"
+import React, { useCallback } from "react"
 import { TransformTitle } from "common/components/transformTItle/TransformTitle"
 import Checkbox from "@mui/material/Checkbox"
 import IconButton from "@mui/material/IconButton"
@@ -8,33 +8,30 @@ import { removeTask, TaskDomainType, updateTask } from "features/todolistsList/m
 import { useAppDispatch } from "common/hooks"
 import { TaskStatuses } from "features/todolistsList/lib/enums"
 
-type TaskPropsType = {
+type Props = {
   task: TaskDomainType
-  todoListId: string
 }
 
-export const Task = memo(({ task, todoListId }: TaskPropsType) => {
-  console.log("render task")
-  const { id, status, title, entityStatus } = task
+export const Task = ({ task }: Props) => {
+  const { todoListId, id, status, title, entityStatus } = task
   const dispatch = useAppDispatch()
 
-  const removeTaskHandler = useCallback(() => {
+  const removeTaskHandler = () => {
     dispatch(removeTask({ todoListId, id }))
-  }, [dispatch])
+  }
 
-  const changeStatusTask = useCallback(
-    (isDone: boolean) => {
-      const status = isDone ? TaskStatuses.Completed : TaskStatuses.New
-      dispatch(updateTask({ task, model: { status } }))
-    },
-    [dispatch, task, status],
-  )
-  const changeTaskTitle = useCallback(
+  const changeTaskStatusHandler = (isDone: boolean) => {
+    const status = isDone ? TaskStatuses.Completed : TaskStatuses.New
+    dispatch(updateTask({ todoListId, id, model: { status } }))
+  }
+
+  const changeTaskTitleHandler = useCallback(
     (title: string) => {
-      dispatch(updateTask({ task, model: { title } }))
+      dispatch(updateTask({ todoListId, id, model: { title } }))
     },
     [dispatch, task, title],
   )
+  const statusLoading = entityStatus === "loading"
 
   return (
     <ListItem
@@ -45,19 +42,19 @@ export const Task = memo(({ task, todoListId }: TaskPropsType) => {
       }}
     >
       <Checkbox
-        onChange={(e) => changeStatusTask(e.currentTarget.checked)}
+        onChange={(e) => changeTaskStatusHandler(e.currentTarget.checked)}
         checked={status > 0}
-        disabled={entityStatus === "loading"}
+        disabled={statusLoading}
       />
       <TransformTitle
         style={status ? "task-done" : "task"}
-        changeTitle={changeTaskTitle}
+        changeTitle={changeTaskTitleHandler}
         title={title}
-        disabled={entityStatus === "loading"}
+        disabled={statusLoading}
       />
-      <IconButton aria-label="delete" onClick={removeTaskHandler} disabled={entityStatus === "loading"}>
+      <IconButton aria-label="delete" onClick={removeTaskHandler} disabled={statusLoading}>
         <DeleteIcon fontSize="inherit" />
       </IconButton>
     </ListItem>
   )
-})
+}

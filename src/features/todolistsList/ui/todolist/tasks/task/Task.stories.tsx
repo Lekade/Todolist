@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import React from "react"
-import { Task } from "features/todolistsList/ui/todolist/task/Task"
+import { Task } from "features/todolistsList/ui/todolist/tasks/task/Task"
 import { ReduxStoreProviderAndThemeDecorator } from "app/decorators/ReduxStoreProviderDecorator"
 import { useSelector } from "react-redux"
 import { AppRootStateType } from "app/Store"
@@ -37,7 +37,7 @@ const TaskWrapper = () => {
       entityStatus: "idle",
     }
   }
-  return <Task task={task} todoListId={"todolistId1"} />
+  return <Task task={task} />
 }
 
 export const TaskStory: Story = {
