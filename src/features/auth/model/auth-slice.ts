@@ -44,7 +44,7 @@ export const me = createAppAsyncThunk<any, undefined>(`${authSlice.name}/me`, as
   if (res.data.resultCode === ResultCode.Success) {
     return { isLoggedIn: true }
   }
-  return rejectWithValue(null)
+  return rejectWithValue(res.data)
 })
 
 export const logout = createAppAsyncThunk<any, undefined>(`${authSlice.name}/logout`, async (_, thunkAPI) => {
@@ -54,5 +54,5 @@ export const logout = createAppAsyncThunk<any, undefined>(`${authSlice.name}/log
     dispatch(clearTodosData())
     return { isLoggedIn: false }
   }
-  return rejectWithValue(null)
+  return rejectWithValue(res.data)
 })

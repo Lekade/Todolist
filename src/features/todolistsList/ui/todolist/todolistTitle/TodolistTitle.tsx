@@ -41,5 +41,10 @@ export const TodolistTitle = ({ todolist }: Props) => {
 }
 
 const TitleTodolistBlock = styled.div`
+  display: flex;
+  align-items: flex-start;
   margin-bottom: 25px;
+  h3 {
+    margin-top: 12px;
+  }
 `

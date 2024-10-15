@@ -34,5 +34,8 @@ export const TransformTitle = memo(({ title, changeTitle, style, disabled }: Pro
 })
 
 const Title = styled.h3`
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  word-break: break-word;
+  overflow-wrap: break-word;
 `

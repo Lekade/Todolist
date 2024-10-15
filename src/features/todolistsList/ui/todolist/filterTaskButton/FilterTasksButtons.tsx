@@ -16,7 +16,7 @@ export const FilterTasksButtons = ({ todoListId: id, filter }: Props) => {
   }
 
   return (
-    <ButtonGroup sx={{ display: "flex", justifyContent: "space-between" }}>
+    <ButtonGroup>
       <Button
         onClick={() => changeTasksFilterHandler("all")}
         variant={filter === "all" ? "outlined" : "contained"}

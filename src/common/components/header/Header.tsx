@@ -33,7 +33,7 @@ export function Header({ changeModeHandler }: HeaderProps) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
+            TODOS
           </Typography>
           <MenuButton onClick={logoutHandler} color="inherit">
             Logout
