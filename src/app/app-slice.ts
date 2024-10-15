@@ -32,6 +32,9 @@ const appSlice = createSlice({
       })
       .addMatcher(isRejected, (state, action: AnyAction) => {
         state.status = "failed"
+        if (action.type === "auth/me/rejected") {
+          return
+        }
         if (action.payload) {
           state.error = action.payload.messages[0]
         } else {
